@@ -1,6 +1,6 @@
 /*============================================================
 ACTIVIDAD SUMATIVA 1:
-MI PRIMER BLOQUE PL/SQL ANONIMO SIMPLE
+INCORPORANDO SENTENCIAS DML Y FUNCIONES SQL
 
 - Miguel Angel Vargas Huenul
 ============================================================*/
@@ -106,12 +106,12 @@ BEGIN
             v_letras := LOWER(SUBSTR(v_appaterno,LENGTH(v_appaterno)-1,2));
         END IF;
 
-        v_clave := SUBSTR(v_numrun,3,1)                -- tercer dígito del RUN
-                || (EXTRACT(YEAR FROM v_fecha_nac)+2)  -- año nacimiento +2
-                || (TO_NUMBER(SUBSTR(v_sueldo,-3))-1)  -- tres últimos dígitos sueldo -1
-                || v_letras                            -- letras según estado civil
-                || v_id_emp                            -- identificación empleado
-                || TO_CHAR(SYSDATE,'MMYYYY');          -- mes y año actuales
+        v_clave := SUBSTR(v_numrun,3,1)                         -- tercer dígito del RUN
+                || (EXTRACT(YEAR FROM v_fecha_nac)+2)           -- año nacimiento +2
+                || LPAD(SUBSTR(TO_CHAR(v_sueldo-1),-3),3,'0')   -- sueldo-1 y últimos 3 dígitos
+                || v_letras                                     -- letras según estado civil
+                || v_id_emp                                     -- identificación empleado
+                || TO_CHAR(SYSDATE,'MMYYYY');                   -- mes y año actuales
 
         -- Construcción del nombre completo con posibilidad de NULL en segundo nombre
         v_nombre_completo := TRIM(v_pnombre     -- primer nombre
@@ -154,4 +154,3 @@ END;
 
 -- Revision de tabla resultante 
 select * from usuario_clave;
-
